@@ -1,0 +1,128 @@
+1. select productcode,max(price),min(price),cast(avg(price) as decimal(7,2)) as 'Average',sum(quantity) from products group by productcode with rollup;
++-------------+------------+------------+---------+---------------+
+| productcode | max(price) | min(price) | Average | sum(quantity) |
++-------------+------------+------------+---------+---------------+
+| PEC         |     250.00 |       0.48 |  125.24 |         18000 |
+| PEN         |       1.25 |       1.23 |    1.24 |         15000 |
+| NULL        |     250.00 |       0.48 |   50.84 |         33000 |
++-------------+------------+------------+---------+---------------+
+
+2.select TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA='dbs' AND REFERENCED_TABLE_NAME='products' AND REFERENCED_COLUMN_NAME='supplierid';
+
+ products_ibfk_1
+
+3. alter table products add constraint cons1 foreign key (supplierid) references suppliers(supplierid) on update cascade;
+
+
+4. alter table products drop foreign key cons2;
+
+5. select products.name,price,suppliers.name from products join suppliers on products.supplierid=suppliers.supplierid where price =1.25;
++----------+-------+------------+
+| name     | price | name       |
++----------+-------+------------+
+| PEN BLUE |  1.25 | Ms traders |
++----------+-------+------------+
+
+6.insert into patients values(1001,'Ah Tech','1991-12-31','2012-01-20',NULL),(NULL,'Kumar','2011-10-29','2012-09-20',NULL),(NULL,'Ali','2011-01-30',curdate(),NULL);
+
+7.select * from patients where lastvisitdate between '2012-09-15' and curdate() order by lastvisitdate;
+
+8.select * from patients where year(dateofbirth)=2011 order by month(dateofbirth),day(dateofbirth);
+
+9.select * from patients where month(dateofbirth)=month(curdate()) and day(dateofbirth)=day(curdate());
+
+10.select name,lastvisitdate from patients where to_days(curdate())-to_days(lastvisitdate)>60;
+
+11.update patients set nextvisitdate=date_add(curdate(),interval 6 month) where name = 'Ali';
+
+12.select date_format('2012-01-01','%W %D %M %Y');
++-----------------------------------------+
+| date_format('2012-01-01','%W %D %M %Y') |
++-----------------------------------------+
+| Sunday 1st January 2012                 |
++-----------------------------------------+
+
+13. select date_format('2012-01-01','%w %d %m %y');
++-----------------------------------------+
+| date_format('2012-01-01','%w %d %m %y') |
++-----------------------------------------+
+| 0 01 01 12                              |
++-----------------------------------------+
+
+14.select to_days('2012-01-31');
++-----------------------+
+| to_days('2012-01-31') |
++-----------------------+
+|                734898 |
++-----------------------+
+
+15.
+MariaDB [dbs]> select date_format('2012-01-01','%d/%m/%y');
++--------------------------------------+
+| date_format('2012-01-01','%d/%m/%y') |
++--------------------------------------+
+| 01/01/12                             |
++--------------------------------------+
+
+16.create view supplier_view
+    -> as
+    ->  select suppliers.name as 'supplier Name',products.name as 'Product Name' from products join suppliers on suppliers.supplierid=products.supplierid;
+
+17.create view second_view as select SupplierName,ProductName from supplier_view where SupplierName='Ms traders' with check option; 
+(restrict the updation in orginal table)
+
+18.load data local infile 'c:/New folder/data.csv' into table emp fields terminated by '\t' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
+
+19.source c:\New folder\sqli.sql
+
+20. create function max_salary4 (deptno int) returns int return (select max(sal) from emp where emp.deptno=deptno);
+
+21. delimiter $
+MariaDB [dbs]> create procedure concatt(IN s1 varchar(10),IN s2 varchar(10),out s3 varchar(20)) begin
+    -> select concat(s1,'is working as',s2)into s3;
+    -> end;
+    -> $
+
+22.mysql -u root -p
+
+23.grant all privileges on `dbs`.* to "deepa"@"localhost";
+
+24.revoke all privileges on dbs from `deepa`@`localhost`;    (remove all priviledges)
+
+25.revoke all privileges on dbs from `deepa`@`localhost`;
+
+26.grant select,insert on emp to 'deepa'@'localhost';
+
+27.create user 'deepa'@'localhost' identified by "password01";
+
+28.show grants for deepa;
+
+29. grant all privileges on `dbs`.* to "deepa"@"localhost";
+
+30.mysqldump -u root -p dbs > C:/new/dbs-bkp.sql		 (to backup the data)
+
+31.>mysql --user root --password dbsnew < c:/new/dbs-bkp.sql	 (to retreive data)
+
+32.start transaction;
+    -> select name from products where productid=1001;
+    -> update products set name ='PEN' where productid=1001;
+    -> commit;
+
+33.set autocommit=0;
+    -> update products set name='DBS Prod' where productid=1001;
+    -> savepoint s1;
+
+34.update products set name='DBs new ' where productid=1001;
+
+35. savepoint s2;
+
+36.rollback to s1;
+Query OK, 0 rows affected (0.00 sec)
+
+37. rollback to s2;
+ERROR 1305 (42000): SAVEPOINT s2 does not exist
+MariaDB [dbsnew]>delimiter //
+
+38.create trigger log before update on products for each row
+    -> insert into prod_price_audit(username,timeofdate,oldprice) values (user(),now(),old.price);
+Query OK, 0 rows affected (0.14 sec)

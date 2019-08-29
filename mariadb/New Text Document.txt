@@ -1,0 +1,24 @@
+1. select ename from emp where ename like "A%";
++-------+
+| ename |
++-------+
+| ALLEN |
+| ADAMS |
++-------+
+
+2.
+MariaDB [dbs]> select ename from emp where mgr is NULL;
++-------+
+| ename |
++-------+
+| KING  |
++-------+
+
+3.delimiter $;
+create trigger log2 before update on products for each row 
+Begin 
+if OLD.price!=NEW.price THEN
+insert into prod_price_audit values(user(),now(),old.price);
+end if;
+end;
+$;

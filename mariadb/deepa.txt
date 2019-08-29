@@ -1,0 +1,45 @@
+Name: Deepa keshri
+empid:491788
+batch-1
+
+1.A,B
+2.D
+3.A.
+4.B
+5.B
+6.A
+7.A
+8.A
+9.B
+10.A
+11.B
+12.B
+13.D
+14.C
+15.B
+16.A
+17.
+ df |  awk 'BEGIN {usage=0} {usage+=$5;} END{ if(usage > 30) print "high usage" usage;  else
+ print "low uasge";}'
+
+
+
+18.#!/bin/bash
+echo "enter username"
+read user
+egrep "^$user" /etc/passwd >/dev/null
+        if [ $? -eq 0 ]; then
+                                echo "$user exists!"
+        else
+
+                                        sudo useradd $user
+                                                                [ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
+                                                                        fi
+
+
+19.#!/bin/bash
+ping google.com
+[ $? -eq 0 ] && echo "internet connected!" || echo "Failed!"
+~                                                              
+
+20.

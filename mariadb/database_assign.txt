@@ -1,0 +1,82 @@
+1. select * from customer;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| Adams         | Spring          | Pittsfield    |
+| Brooks        | Senator         | Brooklyn      |
+| Curry         | North           | Rye           |
+| Glenn         | Sand Hill       | Woodside      |
+| Green         | Walnut          | Stamford      |
+| Hayes         | Main            | Harrison      |
+| Johnson       | Alma            | Palo Alto     |
+| Jones         | Main            | Harrison      |
+| Lindsay       | Park            | Pittsfield    |
+| Smith         | North           | Rye           |
+| Turner        | Putnam          | Stamford      |
+| Williams      | Nassau          | Princeton     |
++---------------+-----------------+---------------+
+
+2.select distinct(branch_name) from loan;
++-------------+
+| branch_name |
++-------------+
+| Round Hill  |
+| Downtown    |
+| Perryridge  |
+| Redwood     |
+| Mianus      |
++-------------+
+
+3.  select * from branch;
++-------------+-------------+---------+
+| branch_name | branch_city | assets  |
++-------------+-------------+---------+
+| Brighton    | Brooklyn    | 7100000 |
+| Downtown    | Brooklyn    | 9000000 |
+| Mianus      | Horseneck   |  400000 |
+| North Town  | Rye         | 3700000 |
+| Perryridge  | Horseneck   | 1700000 |
+| Pownal      | Bennington  |  300000 |
+| Redwood     | Palo Alto   | 2100000 |
+| Round Hill  | Horseneck   | 8000000 |
++-------------+-------------+---------+
+
+4.select account_number from account where balance >700;
++----------------+
+| account_number |
++----------------+
+| A-201          |
+| A-217          |
++----------------+
+
+5.select account_number,balance from account where branch_name="Brighton" and balance > 800;
++----------------+---------+
+| account_number | balance |
++----------------+---------+
+| A-201          |     900 |
++----------------+---------+
+
+6.select branch_name, (assets/1000) as "thousands of dollar" from branch;
++-------------+---------------------+
+| branch_name | thousands of dollar |
++-------------+---------------------+
+| Brighton    |                7100 |
+| Downtown    |                9000 |
+| Mianus      |                 400 |
+| North Town  |                3700 |
+| Perryridge  |                1700 |
+| Pownal      |                 300 |
+| Redwood     |                2100 |
+| Round Hill  |                8000 |
++-------------+---------------------+
+
+7. select branch_name from branch where assets between 1000000 and 4000000;
++-------------+
+| branch_name |
++-------------+
+| North Town  |
+| Perryridge  |
+| Redwood     |
++-------------+
+
+8.
